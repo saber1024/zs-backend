@@ -9,9 +9,22 @@ const getVideoInfo = handler(async (req, res) => {
     return x.container === "mp4";
   });
 
+  var uniqueArr = [];
+
+  uniqueArr = formats.reduce((acc, current) => {
+    const x = acc.find((item) => item.qualityLabel === current.qualityLabel);
+    if (!x) {
+      if (current.qualityLabel !== null) {
+        return acc.concat([current]);
+      }
+    } else {
+      return acc;
+    }
+  }, []);
+
   res.json({
     url: url,
-    format: formats,
+    format: uniqueArr,
     code: 0,
   });
 });
