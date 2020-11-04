@@ -11,22 +11,30 @@ const getVideoInfo = handler(async (req, res) => {
 
   var uniqueArr = [];
 
-  uniqueArr = formats.reduce((acc, current) => {
-    const x = acc.find((item) => item.qualityLabel === current.qualityLabel);
-    if (!x) {
-      if (current.qualityLabel !== null) {
-        return acc.concat([current]);
+  if (!formats.length === 0) {
+    uniqueArr = formats.reduce((acc, current) => {
+      const x = acc.find((item) => item.qualityLabel === current.qualityLabel);
+      if (!x) {
+        if (current.qualityLabel !== null) {
+          return acc.concat([current]);
+        }
+      } else {
+        return acc;
       }
-    } else {
-      return acc;
-    }
-  }, []);
+    }, []);
 
-  res.json({
-    url: url,
-    format: uniqueArr,
-    code: 0,
-  });
+    res.json({
+      url: url,
+      format: uniqueArr,
+      code: 0,
+    });
+  } else {
+    res.json({
+      code: 0,
+      format: [],
+      url: url,
+    });
+  }
 });
 
 module.exports = getVideoInfo;
